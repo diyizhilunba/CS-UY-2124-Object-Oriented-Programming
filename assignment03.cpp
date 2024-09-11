@@ -39,7 +39,7 @@ private:
 
 };
 
-vector<Money> splitDeposits(string& deposit, int num);
+//vector<Money> splitDeposits(string& deposit, int num);
 
 
 int main() {
@@ -50,31 +50,31 @@ int main() {
     Money cashed_money, total_deposit;
     int deposit_num, check_num;
     string deposit_str;
-    //Money cashed_money;
 
     //input:
-    cout << "Enter old account balance: " << endl;
+    cout << "Enter old account balance:";
     cin >> old_balance;
 
-
-    cout << "Enter the number of deposits: " << endl;
+    cout << "Enter the number of deposits:";
     cin >> deposit_num;
-    cin.ignore();
 
 
-    cout << "Enter deposit amounts: " << endl;
-    getline(cin,deposit_str);
+    cout << "Enter deposit amounts:";
+    for(int ind = 0; ind < deposit_num; ++ind) {
+        double one_time;
+        cin >> one_time;
+        deposits.push_back(Money(long(one_time),100 * (one_time - long(one_time))));
+    }
+    //getline(cin,deposit_str);
     //cout << deposit_str;
 
-    deposits = splitDeposits(deposit_str,deposit_num);
-    cout << "Enter the number of checks: " << endl;
-    cin >> check_num;
-    //cin.ignore();
-    /*for(Money mny: deposits) {
-        mny.output(cout);
-    }*/
+    //deposits = splitDeposits(deposit_str,deposit_num);
+    cout << "Enter the number of checks:";
 
-    cout << "Enter check details (number, amount, cashed status) one by one: " << endl;
+    cin >> check_num;
+
+
+    cout << "Enter check details (number, amount, cashed status) one by one" << endl;
     for(int it = 0; it < check_num; it++) {
         Check chk;
         cin >> chk;
@@ -82,8 +82,8 @@ int main() {
         checks.push_back(chk);
     }
 
-    cin.ignore();
-    cout << "Enter the new account balance reported by the bank: " << endl;
+
+    cout << "Enter the new account balance reported by the bank:";
     cin >> new_balance;
 
     //output:
@@ -120,6 +120,7 @@ int main() {
     cout << endl;
     cout << "Variance from the bank's reported new balance: ";
     var = new_balance - projected;
+    //formating
     if(var >= 0) {
         if(int(var * 100) % 100 == 0) {
             cout << "$" << var << ".00" << endl;
@@ -217,31 +218,6 @@ void Check::setNumber(int num) {
 void Check::setStatus(bool sts) {
     isCashed = sts;
 
-}
-
-vector<Money> splitDeposits(string& deposit, int num) {
-    vector<Money> mny;
-
-    for(int times = 0; times < num; times++) {
-        int splitter = deposit.find(" ");
-        if (splitter == -1) {
-            if (!deposit.empty()) {
-                double one_time_deposit = stod(deposit);
-                mny.push_back(Money(long(one_time_deposit), 100 * (one_time_deposit - long(one_time_deposit))));
-            }
-            break;
-
-        }
-
-        double one_time_deposit = stod(deposit.substr(0, splitter));
-        //cout << one_time_deposit << endl;
-
-        deposit = deposit.substr(splitter + 1); // Skip the space
-        //cout << deposit << endl;
-
-        mny.push_back(Money(long(one_time_deposit), 100 * (one_time_deposit - long(one_time_deposit))));
-    }
-    return mny;
 }
 
 
